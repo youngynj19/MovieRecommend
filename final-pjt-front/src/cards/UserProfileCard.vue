@@ -1,8 +1,8 @@
 <template>
 <div class="w3-col l3 m6 w3-margin-bottom">
   <router-link :to="{ name: 'actorProfile', params: {localId: actor.id} }">
-    <img :src="actorProfileUrl[idx]" alt="John" style="width:212.49px;height:318.72px;object-fit:cover;">
-    <h3>{{actor.name}}</h3> <span><i class="fa fa-heart" :style="actorColor[idx]"></i>  My Actor Level: {{actorLevel[idx]}}%</span>
+    <img :src="actorProfileUrl" alt="John" style="width:212.49px;height:318.72px;object-fit:cover;">
+    <h3>{{actor.name}}</h3> <span><i class="fa fa-heart" :style="actorColor"></i>  My Actor Level: {{actor.level}}%</span>
   </router-link>
   <!-- <p class="w3-opacity">CEO & Founder</p> -->
   <!-- <p>Phasellus eget enim eu lectus faucibus vestibulum. Suspendisse sodales pellentesque elementum.</p> -->
