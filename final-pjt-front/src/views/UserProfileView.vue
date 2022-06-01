@@ -187,14 +187,10 @@
   import UserMovieCard from '@/cards/UserMovieCard.vue'
   import { mapGetters, mapActions } from 'vuex'
 
-<<<<<<< HEAD
 
   import TestModal from '@/components/TestModal.vue'
   import UserProfileCard from '@/cards/UserProfileCard.vue'
 
-
-=======
->>>>>>> parent of 1df7c71 (UserActorCard modulizing, before removing data)
   import axios from 'axios'
   import drf from '@/api/drf'
   import router from '@/router'
