@@ -90,92 +90,92 @@
 
 
   <div class="w3-row w3-padding w3-border">
-  <div class="w3-container w3-padding-32" id="about">
-    <h3 class="w3-border-bottom w3-border-light-grey w3-padding-16">About</h3>
-    <p>How much do you know about your taste in films? Might you say there is no such thing like "movie taste" to you; "I just watch any genre, any movie available. I am willing to explore a wide veriety of uncharted territory." That is a respectable stance. Yet, your watch history reads a different line.
-      Just as your website watch history or search history, the list of movies you have savered unveil your cinema preferance. This project is expressly designed to select a handful of perfect films only for you, based on which directors' works you like and which actors were featerd in them.
-      Each director has his own style in filming and actors in expressing the scripts. Be gentle in emotional scene? Get every last drop of sweat to revive the reality? Or talk right at you about the crookied society that makes no sense whatsoever? This page will quench that unknown thirst hidden in mind.
-    </p>
-  </div>
-
-<!-- 감독 추천 -->
-  <h3 class="w3-border-bottom w3-border-light-grey w3-padding-16">Your Favorit Directors</h3>
-  <div class="w3-row-padding w3-grayscale w3-border">
-
-    <!-- 1번 감독 -->
-    <div class="w3-col l3 m6 w3-margin-bottom">
-      <router-link :to="{ name: 'directorProfile', params: {localId: first_director_info.id} }">
-        <img :src="first_director_url" alt="John" style="width:212.49px;height:318.72px;object-fit:cover;">
-        <h3>{{first_director_info.name}}</h3> <span><i class="fa fa-heart" :style="first_director_color"></i>  My Director Level: {{first_director_level}}%</span>
-      </router-link>
-      <p><button 
-            onclick="document.getElementById('id01').style.display='block'" 
-            class="w3-button w3-light-grey w3-block ">
-            Movie Recommend    
-      </button></p>
+    <div class="w3-container w3-padding-32" id="about">
+      <h3 class="w3-border-bottom w3-border-light-grey w3-padding-16">About</h3>
+      <p>How much do you know about your taste in films? Might you say there is no such thing like "movie taste" to you; "I just watch any genre, any movie available. I am willing to explore a wide veriety of uncharted territory." That is a respectable stance. Yet, your watch history reads a different line.
+        Just as your website watch history or search history, the list of movies you have savered unveil your cinema preferance. This project is expressly designed to select a handful of perfect films only for you, based on which directors' works you like and which actors were featerd in them.
+        Each director has his own style in filming and actors in expressing the scripts. Be gentle in emotional scene? Get every last drop of sweat to revive the reality? Or talk right at you about the crookied society that makes no sense whatsoever? This page will quench that unknown thirst hidden in mind.
+      </p>
     </div>
 
-  </div>
+  <!-- 감독 추천 -->
+    <h3 class="w3-border-bottom w3-border-light-grey w3-padding-16">Your Favorit Directors</h3>
+    <div class="w3-row-padding w3-grayscale w3-border">
 
-<!-- 배우 추천 -->
-  <h3 class="w3-border-bottom w3-border-light-grey w3-padding-16">Your Favorit Actors</h3>
-  <div class="w3-row-padding w3-grayscale w3-border">
+      <!-- 1번 감독 -->
+      <div class="w3-col l3 m6 w3-margin-bottom">
+        <router-link :to="{ name: 'directorProfile', params: {localId: first_director_info.id} }">
+          <img :src="first_director_url" alt="John" style="width:212.49px;height:318.72px;object-fit:cover;">
+          <h3>{{first_director_info.name}}</h3> <span><i class="fa fa-heart" :style="first_director_color"></i>  My Director Level: {{first_director_level}}%</span>
+        </router-link>
+        <p><button 
+              onclick="document.getElementById('id01').style.display='block'" 
+              class="w3-button w3-light-grey w3-block ">
+              Movie Recommend    
+        </button></p>
+      </div>
 
-    <!-- 1번 배우 -->
-    <div v-for="(actor, idx) in actorInfo" :key="idx" class="w3-col l3 m6 w3-margin-bottom">
-      <router-link :to="{ name: 'actorProfile', params: {localId: actor.id} }">
-        <img :src="actorProfileUrl[idx]" alt="John" style="width:212.49px;height:318.72px;object-fit:cover;">
-        <h3>{{actor.name}}</h3> <span><i class="fa fa-heart" :style="actorColor[idx]"></i>  My Actor Level: {{actorLevel[idx]}}%</span>
-      </router-link>
-      <!-- <p class="w3-opacity">CEO & Founder</p> -->
-      <!-- <p>Phasellus eget enim eu lectus faucibus vestibulum. Suspendisse sodales pellentesque elementum.</p> -->
-      <p><button 
-            @click="modalOpen(actor.id)"
-            class="w3-button w3-light-grey w3-block"
-            id="myBtn">
-        Movie Recommend    
-      </button></p>
     </div>
 
+  <!-- 배우 추천 -->
+    <h3 class="w3-border-bottom w3-border-light-grey w3-padding-16">Your Favorit Actors</h3>
+    <div class="w3-row-padding w3-grayscale w3-border">
+
+      <!-- 1번 배우 -->
+      <div v-for="(actor, idx) in actorInfo" :key="idx" class="w3-col l3 m6 w3-margin-bottom">
+        <router-link :to="{ name: 'actorProfile', params: {localId: actor.id} }">
+          <img :src="actorProfileUrl[idx]" alt="John" style="width:212.49px;height:318.72px;object-fit:cover;">
+          <h3>{{actor.name}}</h3> <span><i class="fa fa-heart" :style="actorColor[idx]"></i>  My Actor Level: {{actorLevel[idx]}}%</span>
+        </router-link>
+        <!-- <p class="w3-opacity">CEO & Founder</p> -->
+        <!-- <p>Phasellus eget enim eu lectus faucibus vestibulum. Suspendisse sodales pellentesque elementum.</p> -->
+        <p><button 
+              @click="modalOpen(actor.id)"
+              class="w3-button w3-light-grey w3-block"
+              id="myBtn">
+          Movie Recommend    
+        </button></p>
+      </div>
+
+    </div>
+
+
+    <!-- 본 영화 목록 -->
+    <div class="w3-container w3-padding-32" id="projects">
+      <h3 class="w3-border-bottom w3-border-light-grey w3-padding-16">Watched Movies</h3>
+    </div>
+    <div class="w3-row w3-padding w3-border">
+      <div class="w3-grid-container">
+            <user-movie-card
+              class="w3-grid-item w3-col 13 m3 w3-margin-bottom"
+              v-for="movie in user_watched"
+              :key="movie.id" 
+              :movie="movie" :like="movie.like" :watched="movie.watched"
+            ></user-movie-card>
+      </div>
+    </div>
+
+
+    <div class="w3-container">
+      <img src="@/assets/images/head.jpg" class="w3-image" style="width:100%">
+    </div>
+
+
+
+
+
+
+
+
+    
+    <br>
+    Lv.0%~20%<i class="fa fa-heart" style="color: #D3D3D3;"></i>
+    &nbsp;&nbsp;Lv.20%~40%<i class="fa fa-heart" style="color: #A9A9A9;"></i>
+    &nbsp;&nbsp;Lv.40%~60%<i class="fa fa-heart" style="color: #787878;"></i>
+    &nbsp;&nbsp;Lv.60%~80%<i class="fa fa-heart" style="color: #484848;"></i>
+    &nbsp;&nbsp;Lv.80%~100%<i class="fa fa-heart" style="color: #000000;"></i>
   </div>
 
-
-  <!-- 본 영화 목록 -->
-  <div class="w3-container w3-padding-32" id="projects">
-    <h3 class="w3-border-bottom w3-border-light-grey w3-padding-16">Watched Movies</h3>
-  </div>
-  <div class="w3-row w3-padding w3-border">
-  <div class="w3-grid-container">
-        <user-movie-card
-          class="w3-grid-item w3-col 13 m3 w3-margin-bottom"
-          v-for="movie in user_watched"
-          :key="movie.id" 
-          :movie="movie" :like="movie.like" :watched="movie.watched"
-        ></user-movie-card>
-  </div>
-  </div>
-
-
-<div class="w3-container">
-  <img src="@/assets/images/head.jpg" class="w3-image" style="width:100%">
-</div>
-
-
-
-
-
-
-
-
-  
-<br>
-Lv.0%~20%<i class="fa fa-heart" style="color: #D3D3D3;"></i>
-&nbsp;&nbsp;Lv.20%~40%<i class="fa fa-heart" style="color: #A9A9A9;"></i>
-&nbsp;&nbsp;Lv.40%~60%<i class="fa fa-heart" style="color: #787878;"></i>
-&nbsp;&nbsp;Lv.60%~80%<i class="fa fa-heart" style="color: #484848;"></i>
-&nbsp;&nbsp;Lv.80%~100%<i class="fa fa-heart" style="color: #000000;"></i>
-<p></p>
-</div>
 </div>
 </template>
 
@@ -183,8 +183,8 @@ Lv.0%~20%<i class="fa fa-heart" style="color: #D3D3D3;"></i>
   // import MovieCard from '@/components/MovieCard'
   // import ActorCard from '@/components/ActorCard'
   // import DirectorCard from '@/components/DirectorCard'
-  import HomeMovieCard from '@/components/HomeMovieCard.vue'
-  import UserMovieCard from '@/components/UserMovieCard.vue'
+  import HomeMovieCard from '@/cards/HomeMovieCard.vue'
+  import UserMovieCard from '@/cards/UserMovieCard.vue'
   import { mapGetters, mapActions } from 'vuex'
 
   import axios from 'axios'
