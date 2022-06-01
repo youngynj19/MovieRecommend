@@ -16,9 +16,11 @@
 </template>
 
 <script>
+import drf from '@/api/drf'
+
 export default {
   name: 'UserProfileCard',
-  props: { key: Number, actor: Object, },
+  props: { actor: Object, },
   data() {
     return {
       actorProfileUrl: '',
@@ -31,8 +33,15 @@ export default {
       inst.style = "display: block;"
     },
   },
-  created: {
+  created() {
 
+    const color = ["color: #D3D3D3;", "color: #A9A9A9", "color: #787878;", "color: #484848;", "color: #000000;", "color: #000000;"]
+    this.actorColor = color[parseInt(this.actor.level[0]/20)]
+
+    if ( this.actor === 'no_actor' ){ this.actorProfileUrl = drf.url.noPhoto() }
+    else if ( !this.actor.profile_url ){ this.actorProfileUrl = drf.url.noPhoto() }
+    else { this.actorProfileUrl = drf.url.img() + this.actor.profile_url }
+  
   }
 }
 </script>
