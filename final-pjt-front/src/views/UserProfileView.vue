@@ -1,8 +1,21 @@
 <template>
-
 <!-- Page content -->
 <!-- <div class="w3-content w3-padding" style="max-width:1564px"> -->
 <div>
+
+
+
+
+<test-modal></test-modal>
+
+
+  
+  
+  
+  
+  
+  
+  
   <!-- 1번 감독 모달 -->
     <div id="id01" class="w3-modal">
       <div class="w3-modal-content w3-animate-top w3-card-4" style="width=5rem">
@@ -90,6 +103,7 @@
 
 
   <div class="w3-row w3-padding w3-border">
+
     <div class="w3-container w3-padding-32" id="about">
       <h3 class="w3-border-bottom w3-border-light-grey w3-padding-16">About</h3>
       <p>How much do you know about your taste in films? Might you say there is no such thing like "movie taste" to you; "I just watch any genre, any movie available. I am willing to explore a wide veriety of uncharted territory." That is a respectable stance. Yet, your watch history reads a different line.
@@ -122,20 +136,12 @@
     <div class="w3-row-padding w3-grayscale w3-border">
 
       <!-- 1번 배우 -->
-      <div v-for="(actor, idx) in actorInfo" :key="idx" class="w3-col l3 m6 w3-margin-bottom">
-        <router-link :to="{ name: 'actorProfile', params: {localId: actor.id} }">
-          <img :src="actorProfileUrl[idx]" alt="John" style="width:212.49px;height:318.72px;object-fit:cover;">
-          <h3>{{actor.name}}</h3> <span><i class="fa fa-heart" :style="actorColor[idx]"></i>  My Actor Level: {{actorLevel[idx]}}%</span>
-        </router-link>
-        <!-- <p class="w3-opacity">CEO & Founder</p> -->
-        <!-- <p>Phasellus eget enim eu lectus faucibus vestibulum. Suspendisse sodales pellentesque elementum.</p> -->
-        <p><button 
-              @click="modalOpen(actor.id)"
-              class="w3-button w3-light-grey w3-block"
-              id="myBtn">
-          Movie Recommend    
-        </button></p>
-      </div>
+      <user-profile-card
+        v-for="(actor, idx) in actorInfo" 
+        :key="idx" 
+        class="w3-col l3 m6 w3-margin-bottom"
+        :actor="actor">
+      </user-profile-card>
 
     </div>
 
@@ -160,13 +166,6 @@
       <img src="@/assets/images/head.jpg" class="w3-image" style="width:100%">
     </div>
 
-
-
-
-
-
-
-
     
     <br>
     Lv.0%~20%<i class="fa fa-heart" style="color: #D3D3D3;"></i>
@@ -187,6 +186,12 @@
   import UserMovieCard from '@/cards/UserMovieCard.vue'
   import { mapGetters, mapActions } from 'vuex'
 
+
+  import TestModal from '@/components/TestModal.vue'
+  import UserProfileCard from '@/cards/UserProfileCard.vue'
+
+
+
   import axios from 'axios'
   import drf from '@/api/drf'
   import router from '@/router'
@@ -197,6 +202,7 @@
   name: 'UserProfileView',
   components: {
     UserMovieCard, HomeMovieCard,
+    TestModal, UserProfileCard,
     // MovieCard, ActorCard, DirectorCard, VueHorizontal,
   },
   data () {
@@ -210,8 +216,31 @@
 
       // 배우정보
       actorInfo: [],
+      actorLevel: [],
+      actorColor: [],
       actorRecommend: [],
+      actorProfileUrl: [],
       actorMovieUrl: [],
+      actorModalButton: [],
+      actorModalId:[],
+      // first_actor_info: [],
+      // second_actor_info: [],
+      // third_actor_info: [],
+      // first_actor_level: 0,
+      // second_actor_level: 0,
+      // third_actor_level: 0,
+      // first_actor_color: '',
+      // second_actor_color: 0,
+      // third_actor_color: 0,
+      // firstActorRecomend: {},
+      // first_actor_url: '',
+      // secondActorRecomend: {},
+      // second_actor_url: '',
+      // thirdActorRecomend: {},
+      // third_actor_url: '',
+      // first_act_mov_url: '',
+      // second_act_mov_url: '',
+      // third_act_mov_url: '',
 
       // 감독정보
       first_director_info: [],
@@ -308,6 +337,12 @@
           this.actorRecommend.push(res.data.by_actor_recomend.second_actor)
           this.actorRecommend.push(res.data.by_actor_recomend.third_actor)          
 
+          // this.firstActorRecomend = res.data.by_actor_recomend.first_actor
+          // this.secondActorRecomend = res.data.by_actor_recomend.second_actor
+          // this.thirdActorRecomend = res.data.by_actor_recomend.third_actor
+          // this.byActorRecomend.push(res.data.by_actor_recomend.first_actor)
+          // this.byActorRecomend.push(res.data.by_actor_recomend.second_actor)
+          // this.byActorRecomend.push(res.data.by_actor_recomend.third_actor)
           this.user_watched = res.data.user_watched
           this.user_data = res.data.user_data
           this.userNameUpper = res.data.user_data.username.charAt(0).toUpperCase() + res.data.user_data.username.slice(1)
@@ -338,7 +373,67 @@
           this.actorInfo.push(res.data.by_actor_recomend.second_actor_info)
           this.actorInfo.push(res.data.by_actor_recomend.third_actor_info)
 
+          this.actorLevel.push(parseInt(res.data.by_actor_recomend.first_actor_level))
+          this.actorLevel.push(parseInt(res.data.by_actor_recomend.second_actor_level))
+          this.actorLevel.push(parseInt(res.data.by_actor_recomend.third_actor_level))
 
+          this.actorColor.push(color[parseInt(this.actorLevel[0]/20)])
+          this.actorColor.push(color[parseInt(this.actorLevel[1]/20)])
+          this.actorColor.push(color[parseInt(this.actorLevel[2]/20)])
+
+          this.actorModalButton.push(`document.getElementById('${this.actorRecommend[0]['id']}').style.display='block'`)
+          this.actorModalButton.push(`document.getElementById('${this.actorRecommend[1]['id']}').style.display='block'`)
+          this.actorModalButton.push(`document.getElementById('${this.actorRecommend[2]['id']}').style.display='block'`)
+
+          this.actorModalId.push(`document.getElementById('${this.actorRecommend[0]['id']}').style.display='none'`)
+          this.actorModalId.push(`document.getElementById('${this.actorRecommend[1]['id']}').style.display='none'`)
+          this.actorModalId.push(`document.getElementById('${this.actorRecommend[2]['id']}').style.display='none'`)
+
+          // 배우 이미지 할당
+          if ( this.actorInfo[0] === 'no_actor' ){ this.actorProfileUrl.push(drf.url.noPhoto()) }
+          else if ( !this.actorInfo[0]['profile_url'] ){ this.actorProfileUrl.push(drf.url.noPhoto()) }
+          else { this.actorProfileUrl.push(drf.url.img() + this.actorInfo[0]['profile_url']) }          
+          if ( this.actorInfo[1] === 'no_actor' ){ this.actorProfileUrl.push(drf.url.noPhoto()) }
+          else if ( !this.actorInfo[1]['profile_url'] ){ this.actorProfileUrl.push(drf.url.noPhoto()) }
+          else { this.actorProfileUrl.push(drf.url.img() + this.actorInfo[1]['profile_url']) }
+          if ( this.actorInfo[2] === 'no_actor' ){ this.actorProfileUrl.push(drf.url.noPhoto()) }
+          else if ( !this.actorInfo[2]['profile_url'] ){ this.actorProfileUrl.push(drf.url.noPhoto()) }
+          else { this.actorProfileUrl.push(drf.url.img() + this.actorInfo[2]['profile_url']) }
+
+
+
+
+
+
+
+
+
+
+          // // 배우정보 할당
+          // this.first_actor_info = res.data.by_actor_recomend.first_actor_info
+          // this.second_actor_info = res.data.by_actor_recomend.second_actor_info
+          // this.third_actor_info = res.data.by_actor_recomend.third_actor_info
+
+          // this.first_actor_level = parseInt(res.data.by_actor_recomend.first_actor_level)
+          // this.second_actor_level = parseInt(res.data.by_actor_recomend.second_actor_level)
+          // this.third_actor_level = parseInt(res.data.by_actor_recomend.third_actor_level)
+
+          // // if (res.data.by_actor_recomend.first_actor_level <= 20) {this.first_actor_color = color[0]}
+          // // else if (res.data.by_actor_recomend.first_actor_level <= 20) {this.first_actor_color = color[0]}
+          // this.first_actor_color = color[parseInt(this.first_actor_level/20)]
+          // this.second_actor_color = color[parseInt(this.second_actor_level/20)]
+          // this.third_actor_color = color[parseInt(this.third_actor_level/20)]
+
+          // // 배우 이미지 할당
+          // if ( this.first_actor_info === 'no_actor' ){ this.first_actor_url = drf.url.noPhoto() }
+          // else if ( !this.first_actor_info.profile_url ){ this.first_actor_url = drf.url.noPhoto() }
+          // else { this.first_actor_url = drf.url.img() + this.first_actor_info.profile_url }          
+          // if ( this.second_actor_info === 'no_actor' ){ this.second_actor_url = drf.url.noPhoto() }
+          // else if ( !this.second_actor_info.profile_url ){ this.second_actor_url = drf.url.noPhoto() }
+          // else { this.second_actor_url = drf.url.img() + this.second_actor_info.profile_url }
+          // if ( this.third_actor_info === 'no_actor' ){ this.third_actor_url = drf.url.noPhoto() }
+          // else if ( !this.third_actor_info.profile_url ){ this.third_actor_url = drf.url.noPhoto() }
+          // else { this.third_actor_url = drf.url.img() + this.third_actor_info.profile_url }
 
 
 
