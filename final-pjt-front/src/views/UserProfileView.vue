@@ -187,10 +187,6 @@
   import UserMovieCard from '@/cards/UserMovieCard.vue'
   import { mapGetters, mapActions } from 'vuex'
 
-
-  import TestModal from '@/components/TestModal.vue'
-  import UserProfileCard from '@/cards/UserProfileCard.vue'
-
   import axios from 'axios'
   import drf from '@/api/drf'
   import router from '@/router'
