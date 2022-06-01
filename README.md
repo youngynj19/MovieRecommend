@@ -102,4 +102,6 @@
 
 
 
-## 기타
+## 링크
+
+https://github.com/youngynj19/MovieRecommend

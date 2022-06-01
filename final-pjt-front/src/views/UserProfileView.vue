@@ -69,10 +69,10 @@
             <p><strong>popularity: {{movie.popularity}}</strong></p>
             <p>{{movie.overview}}</p>
             <!-- 좋아요, 봤어요 -->
-            <p v-if="actorInfo[idx]['like']==='true'" class="w3-left"><button class="w3-button w3-white w3-border" style="width: 120px;" @click="[likeClick($event), likeAxios(actorInfo[idx]['local_id'])]">✓ Liked</button></p>
-            <p v-if="actorInfo[idx]['like']==='false'" class="w3-left"><button class="w3-button w3-white w3-border" style="width: 120px;" @click="[likeClick($event), likeAxios(actorInfo[idx]['local_id'])]"><i class="fa fa-thumbs-up"></i> Like</button></p>
-            <p v-if="actorInfo[idx]['watched']==='true'" class="w3-left"><button class="w3-button w3-white w3-border" style="width: 120px;" @click="[watchedClick($event), watchedAxios(actorInfo[idx]['local_id'])]">✓ Watched</button></p>
-            <p v-if="actorInfo[idx]['watched']==='false'" class="w3-left"><button class="w3-button w3-white w3-border" style="width: 120px;" @click="[watchedClick($event), watchedAxios(actorInfo[idx]['local_id'])]"><i class="fa fa-video-camera"></i> Watch</button></p>
+            <p v-if="actorRecommend[idx]['like']==='true'" class="w3-left"><button class="w3-button w3-white w3-border" style="width: 120px;" @click="[likeClick($event), likeAxios(actorRecommend[idx]['local_id'])]">✓ Liked</button></p>
+            <p v-if="actorRecommend[idx]['like']==='false'" class="w3-left"><button class="w3-button w3-white w3-border" style="width: 120px;" @click="[likeClick($event), likeAxios(actorRecommend[idx]['local_id'])]"><i class="fa fa-thumbs-up"></i> Like</button></p>
+            <p v-if="actorRecommend[idx]['watched']==='true'" class="w3-left"><button class="w3-button w3-white w3-border" style="width: 120px;" @click="[watchedClick($event), watchedAxios(actorRecommend[idx]['local_id'])]">✓ Watched</button></p>
+            <p v-if="actorRecommend[idx]['watched']==='false'" class="w3-left"><button class="w3-button w3-white w3-border" style="width: 120px;" @click="[watchedClick($event), watchedAxios(actorRecommend[idx]['local_id'])]"><i class="fa fa-video-camera"></i> Watch</button></p>
           </div>
         </div>
         <footer class="w3-container w3-dark-grey">
@@ -318,7 +318,7 @@ Lv.0%~20%<i class="fa fa-heart" style="color: #D3D3D3;"></i>
         .then(res => {
           const color = ["color: #D3D3D3;", "color: #A9A9A9", "color: #787878;", "color: #484848;", "color: #000000;", "color: #000000;"]
           // console.log('하하 이걸 봐라')
-          // console.log(res.data)
+          // console.log(res.data.by_actor_recomend.first_actor_info)
 
           this.firstDirectorRecomend = res.data.by_director_recomend.first_director
           this.secondDirectorRecomend = res.data.by_director_recomend.second_director
