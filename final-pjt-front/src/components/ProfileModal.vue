@@ -9,18 +9,6 @@
       </header>
       <br>
       <!-- 바디 -->
-
-
-
-
-
-
-      
-      
-
-      
-      
-      
       <div class="w3-container">
         <div class="w3-justify w3-container w3-row-padding">
           <div class="w3-center w3-col l4 m6" style="padding-bottom: 1.5rem">
@@ -38,10 +26,6 @@
           </div>
         </div>
       </div>
-
-
-
-
       <!-- 푸터 -->
       <footer class="w3-container w3-dark-grey">
         <p>recommended by {{ name }}</p>

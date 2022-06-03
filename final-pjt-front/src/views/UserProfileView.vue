@@ -142,9 +142,6 @@
 </template>
 
 <script>
-  // import MovieCard from '@/components/MovieCard'
-  // import ActorCard from '@/components/ActorCard'
-  // import DirectorCard from '@/components/DirectorCard'
   import HomeMovieCard from '@/cards/HomeMovieCard.vue'
   import UserMovieCard from '@/cards/UserMovieCard.vue'
   import { mapGetters, mapActions } from 'vuex'
@@ -158,7 +155,6 @@
   import axios from 'axios'
   import drf from '@/api/drf'
   import router from '@/router'
-  // import VueHorizontal from 'vue-horizontal'
   
 
   export default {
@@ -166,7 +162,6 @@
   components: {
     UserMovieCard, HomeMovieCard,
     ProfileModal, UserProfileCard,
-    // MovieCard, ActorCard, DirectorCard, VueHorizontal,
   },
   data () {
     return {
@@ -186,24 +181,6 @@
       actorMovieUrl: [],
       actorModalButton: [],
       actorModalId:[],
-      // first_actor_info: [],
-      // second_actor_info: [],
-      // third_actor_info: [],
-      // first_actor_level: 0,
-      // second_actor_level: 0,
-      // third_actor_level: 0,
-      // first_actor_color: '',
-      // second_actor_color: 0,
-      // third_actor_color: 0,
-      // firstActorRecomend: {},
-      // first_actor_url: '',
-      // secondActorRecomend: {},
-      // second_actor_url: '',
-      // thirdActorRecomend: {},
-      // third_actor_url: '',
-      // first_act_mov_url: '',
-      // second_act_mov_url: '',
-      // third_act_mov_url: '',
 
       // 감독정보
       first_director_info: [],
@@ -235,7 +212,6 @@
   },
     methods: {
     ...mapActions([
-      // 'fetchUserProfile',
       'removeToken',
       'fetchMovieLike',
       'fetchMovieWatched'
@@ -286,8 +262,6 @@
       })
         .then(res => {
           const color = ["color: #D3D3D3;", "color: #A9A9A9", "color: #787878;", "color: #484848;", "color: #000000;", "color: #000000;"]
-          // console.log('하하 이걸 봐라')
-          // console.log(res.data.by_actor_recomend.first_actor_info)
 
           this.firstDirectorRecomend = res.data.by_director_recomend.first_director
           this.secondDirectorRecomend = res.data.by_director_recomend.second_director
@@ -300,12 +274,6 @@
           this.actorRecommend.push(res.data.by_actor_recomend.second_actor)
           this.actorRecommend.push(res.data.by_actor_recomend.third_actor)          
 
-          // this.firstActorRecomend = res.data.by_actor_recomend.first_actor
-          // this.secondActorRecomend = res.data.by_actor_recomend.second_actor
-          // this.thirdActorRecomend = res.data.by_actor_recomend.third_actor
-          // this.byActorRecomend.push(res.data.by_actor_recomend.first_actor)
-          // this.byActorRecomend.push(res.data.by_actor_recomend.second_actor)
-          // this.byActorRecomend.push(res.data.by_actor_recomend.third_actor)
           this.user_watched = res.data.user_watched
           this.user_data = res.data.user_data
           this.userNameUpper = res.data.user_data.username.charAt(0).toUpperCase() + res.data.user_data.username.slice(1)
@@ -336,9 +304,9 @@
           this.actorInfo.push(res.data.by_actor_recomend.second_actor_info)
           this.actorInfo.push(res.data.by_actor_recomend.third_actor_info)
 
-          this.actorLevel.push(parseInt(res.data.by_actor_recomend.first_actor_level))
-          this.actorLevel.push(parseInt(res.data.by_actor_recomend.second_actor_level))
-          this.actorLevel.push(parseInt(res.data.by_actor_recomend.third_actor_level))
+          this.actorInfo[0] = {...this.actorInfo[0], 'level': parseInt(res.data.by_actor_recomend.first_actor_level) }
+          this.actorInfo[1] = {...this.actorInfo[1], 'level': parseInt(res.data.by_actor_recomend.second_actor_level) }
+          this.actorInfo[2] = {...this.actorInfo[2], 'level': parseInt(res.data.by_actor_recomend.third_actor_level) }
 
           this.actorColor.push(color[parseInt(this.actorLevel[0]/20)])
           this.actorColor.push(color[parseInt(this.actorLevel[1]/20)])
