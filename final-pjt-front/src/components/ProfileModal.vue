@@ -10,7 +10,7 @@
       <div class="w3-container">
         <div class="w3-justify w3-container">
           <div class="w3-center">
-            <img :src="movieURL()" class="w3-image w3-right w3-hide-small">
+            <img :src="movieURL()" class="w3-image w3-right w3-hide-small w3-greyscale">
           <!-- <home-movie-card 
           :movie="firstActorRecomend" :like="firstActorRecomend.like" :watched="firstActorRecomend.watched"
           ></home-movie-card> -->
