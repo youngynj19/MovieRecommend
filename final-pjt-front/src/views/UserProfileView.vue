@@ -1,21 +1,7 @@
 <template>
 <!-- Page content -->
 <!-- <div class="w3-content w3-padding" style="max-width:1564px"> -->
-<div>
-
-
-
-
-<test-modal></test-modal>
-
-
-  
-  
-  
-  
-  
-  
-  
+<div>  
   <!-- 1번 감독 모달 -->
     <div id="id01" class="w3-modal">
       <div class="w3-modal-content w3-animate-top w3-card-4" style="width=5rem">
@@ -63,36 +49,13 @@
 
 
     <!-- 1번 배우 모달 -->
-    <div v-for="(movie, idx) in actorRecommend" :key="idx" :id="actorInfo[idx]['id']" class="w3-modal" style="display: none">
-      <div class="w3-modal-content w3-animate-top w3-card-4" style="width=5rem">
-        <header class="w3-container w3-dark-grey"> 
-          <span @click="modalClose(actorInfo[idx]['id'])" id="myBtn"
-          class="w3-button w3-display-topright">&times;</span>
-          <h2>{{movie.title}}</h2>
-        </header>
-        <br>
-        <div class="w3-container">
-          <div class="w3-justify w3-container">
-            <div class="w3-center">
-            <!-- <home-movie-card 
-            :movie="firstActorRecomend" :like="firstActorRecomend.like" :watched="firstActorRecomend.watched"
-            ></home-movie-card> -->
-            </div>
-            <br>
-            <p><strong>popularity: {{movie.popularity}}</strong></p>
-            <p>{{movie.overview}}</p>
-            <!-- 좋아요, 봤어요 -->
-            <p v-if="actorRecommend[idx]['like']==='true'" class="w3-left"><button class="w3-button w3-white w3-border" style="width: 120px;" @click="[likeClick($event), likeAxios(actorRecommend[idx]['local_id'])]">✓ Liked</button></p>
-            <p v-if="actorRecommend[idx]['like']==='false'" class="w3-left"><button class="w3-button w3-white w3-border" style="width: 120px;" @click="[likeClick($event), likeAxios(actorRecommend[idx]['local_id'])]"><i class="fa fa-thumbs-up"></i> Like</button></p>
-            <p v-if="actorRecommend[idx]['watched']==='true'" class="w3-left"><button class="w3-button w3-white w3-border" style="width: 120px;" @click="[watchedClick($event), watchedAxios(actorRecommend[idx]['local_id'])]">✓ Watched</button></p>
-            <p v-if="actorRecommend[idx]['watched']==='false'" class="w3-left"><button class="w3-button w3-white w3-border" style="width: 120px;" @click="[watchedClick($event), watchedAxios(actorRecommend[idx]['local_id'])]"><i class="fa fa-video-camera"></i> Watch</button></p>
-          </div>
-        </div>
-        <footer class="w3-container w3-dark-grey">
-          <p>MOVIE MAGAGIN</p>
-        </footer>
-      </div>
-    </div>
+    <profile-modal
+      v-for="(movie, idx) in actorRecommend" 
+      :key="idx" 
+      :id="actorInfo[idx]['id']"
+      :name="actorInfo[idx]['name']"
+      :movie="movie"
+    ></profile-modal>
     <!-- 1번배우 모달 끝 -->
 
 
@@ -187,7 +150,7 @@
   import { mapGetters, mapActions } from 'vuex'
 
 
-  import TestModal from '@/components/TestModal.vue'
+  import ProfileModal from '@/components/ProfileModal.vue'
   import UserProfileCard from '@/cards/UserProfileCard.vue'
 
 
@@ -202,7 +165,7 @@
   name: 'UserProfileView',
   components: {
     UserMovieCard, HomeMovieCard,
-    TestModal, UserProfileCard,
+    ProfileModal, UserProfileCard,
     // MovieCard, ActorCard, DirectorCard, VueHorizontal,
   },
   data () {
