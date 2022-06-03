@@ -3,48 +3,13 @@
 <!-- <div class="w3-content w3-padding" style="max-width:1564px"> -->
 <div>  
   <!-- 1번 감독 모달 -->
-    <div id="id01" class="w3-modal">
-      <div class="w3-modal-content w3-animate-top w3-card-4" style="width=5rem">
-        <header class="w3-container w3-dark-grey" style="50px"> 
-          <span onclick="document.getElementById('id01').style.display='none'" 
-          class="w3-button w3-display-topright">&times;</span>
-          <h2>{{firstDirectorRecomend.title}}</h2>
-        </header>
-        <br>
-        <div class="w3-container">
-          <div class="w3-justify w3-container">
-            <div class="w3-center">
-            <home-movie-card 
-            :movie="firstDirectorRecomend" :like="firstDirectorRecomend.like" :watched="firstDirectorRecomend.watched"
-            ></home-movie-card>
-            </div>
-            <br>
-            <p><strong>popularity: {{firstDirectorRecomend.popularity}}</strong></p>
-            <p>{{firstDirectorRecomend.overview}}</p>
-            <!-- 좋아요, 봤어요 -->
-            <p 
-              v-if="firstDirectorRecomend.like==='true'" 
-              class="w3-left">
-              <button 
-                class="w3-button w3-white w3-border" 
-                style="width: 120px;" 
-                @click="[
-                  likeClick($event), 
-                  likeAxios(firstDirectorRecomend.local_id)
-                  ]">
-                  ✓ Liked
-              </button>
-            </p>
-            <p v-if="firstDirectorRecomend.like==='false'" class="w3-left"><button class="w3-button w3-white w3-border" style="width: 120px;" @click="[likeClick($event), likeAxios(firstDirectorRecomend.local_id)]"><i class="fa fa-thumbs-up"></i> Like</button></p>
-            <p v-if="firstDirectorRecomend.watched==='true'" class="w3-left"><button class="w3-button w3-white w3-border" style="width: 120px;" @click="[watchedClick($event), watchedAxios(firstDirectorRecomend.local_id)]">✓ Watched</button></p>
-            <p v-if="firstDirectorRecomend.watched==='false'" class="w3-left"><button class="w3-button w3-white w3-border" style="width: 120px;" @click="[watchedClick($event), watchedAxios(firstDirectorRecomend.local_id)]"><i class="fa fa-video-camera"></i> Watch</button></p>
-          </div>
-        </div>
-        <footer class="w3-container w3-dark-grey">
-          <p>MOVIE MAGAGIN</p>
-        </footer>
-      </div>
-    </div>
+    <profile-modal
+      v-for="(movie, idx) in directorRecommend" 
+      :key="idx" 
+      :id="directorInfo[idx]['id']"
+      :name="directorInfo[idx]['name']"
+      :movie="movie"
+    ></profile-modal>
 <!-- 1번감독 모달 끝 -->
 
 
@@ -79,18 +44,13 @@
     <h3 class="w3-border-bottom w3-border-light-grey w3-padding-16">Your Favorit Directors</h3>
     <div class="w3-row-padding w3-grayscale w3-border">
 
-      <!-- 1번 감독 -->
-      <div class="w3-col l3 m6 w3-margin-bottom">
-        <router-link :to="{ name: 'directorProfile', params: {localId: first_director_info.id} }">
-          <img :src="first_director_url" alt="John" style="width:212.49px;height:318.72px;object-fit:cover;">
-          <h3>{{first_director_info.name}}</h3> <span><i class="fa fa-heart" :style="first_director_color"></i>  My Director Level: {{first_director_level}}%</span>
-        </router-link>
-        <p><button 
-              onclick="document.getElementById('id01').style.display='block'" 
-              class="w3-button w3-light-grey w3-block ">
-              Movie Recommend    
-        </button></p>
-      </div>
+      <!-- 감독 카드 -->
+      <director-profile-card
+        v-for="(director, idx) in directorInfo" 
+        :key="idx" 
+        class="w3-col l3 m6 w3-margin-bottom"
+        :director="director">
+      </director-profile-card>
 
     </div>
 
@@ -98,13 +58,13 @@
     <h3 class="w3-border-bottom w3-border-light-grey w3-padding-16">Your Favorit Actors</h3>
     <div class="w3-row-padding w3-grayscale w3-border">
 
-      <!-- 1번 배우 -->
-      <user-profile-card
+      <!-- 배우 카드 -->
+      <actor-profile-card
         v-for="(actor, idx) in actorInfo" 
         :key="idx" 
         class="w3-col l3 m6 w3-margin-bottom"
         :actor="actor">
-      </user-profile-card>
+      </actor-profile-card>
 
     </div>
 
@@ -115,12 +75,12 @@
     </div>
     <div class="w3-row w3-padding w3-border">
       <div class="w3-grid-container">
-            <user-movie-card
-              class="w3-grid-item w3-col 13 m3 w3-margin-bottom"
-              v-for="movie in user_watched"
-              :key="movie.id" 
-              :movie="movie" :like="movie.like" :watched="movie.watched"
-            ></user-movie-card>
+        <user-movie-card
+          class="w3-grid-item w3-col 13 m3 w3-margin-bottom"
+          v-for="movie in user_watched"
+          :key="movie.id" 
+          :movie="movie" :like="movie.like" :watched="movie.watched"
+        ></user-movie-card>
       </div>
     </div>
 
@@ -142,13 +102,11 @@
 </template>
 
 <script>
-  import HomeMovieCard from '@/cards/HomeMovieCard.vue'
   import UserMovieCard from '@/cards/UserMovieCard.vue'
-  import { mapGetters, mapActions } from 'vuex'
-
-
   import ProfileModal from '@/components/ProfileModal.vue'
-  import UserProfileCard from '@/cards/UserProfileCard.vue'
+  import ActorProfileCard from '@/cards/ActorProfileCard.vue'
+  import DirectorProfileCard from '@/cards/DirectorProfileCard.vue'
+  import { mapGetters, mapActions } from 'vuex'
 
 
 
@@ -159,48 +117,25 @@
 
   export default {
   name: 'UserProfileView',
-  components: {
-    UserMovieCard, HomeMovieCard,
-    ProfileModal, UserProfileCard,
+  components: { 
+    UserMovieCard, 
+    ProfileModal, 
+    ActorProfileCard,
+    DirectorProfileCard, 
   },
   data () {
     return {
       load: false,
+      // 유저 정보
       userNameUpper: '',
-      byDirectorRecomend: [],
-      byActorRecomend: [],
       user_watched: [],
       user_data: {},
-
       // 배우정보
       actorInfo: [],
-      actorLevel: [],
-      actorColor: [],
       actorRecommend: [],
-      actorProfileUrl: [],
-      actorMovieUrl: [],
-      actorModalButton: [],
-      actorModalId:[],
-
       // 감독정보
-      first_director_info: [],
-      second_director_info: [],
-      third_director_info: [],
-      first_director_level: 0,
-      second_director_level: 0,
-      third_director_level: 0,
-      first_director_color: 0,
-      second_director_color: 0,
-      third_director_color: 0,
-      firstDirectorRecomend: {},
-      first_director_url: '',
-      secondDirectorRecomend: {},
-      second_director_url: '',
-      thirdDirectorRecomend: {},
-      third_director_url: '',
-      first_dir_mov_url: '',
-      second_dir_mov_url: '',
-      third_dir_mov_url: '',
+      directorInfo: [],
+      directorRecommend: [],
     }
   },
   computed: {
@@ -210,23 +145,13 @@
       // 'profile',
       ]),
   },
-    methods: {
+  methods: {
     ...mapActions([
       'removeToken',
       'fetchMovieLike',
       'fetchMovieWatched'
       ]),
-    
-    modalOpen(id) {
-      var inst = document.getElementById(id);
-      inst.style = "display: block;"
-    },
-
-  modalClose(id) {
-      var inst = document.getElementById(id);
-      inst.style = "display: none;"
-    },
-
+    // like
     likeClick(event) {
     console.log(event.target.innerHTML)
     if (event.target.innerHTML === '<i class="fa fa-thumbs-up"></i> Like') {
@@ -239,7 +164,7 @@
     likeAxios(id) {
     this.fetchMovieLike(id)
     },
-
+    // watched
     watchedClick(event) { 
     console.log(event.target.value)
     if (event.target.innerHTML === '<i class="fa fa-video-camera"></i> Watch') {
@@ -261,43 +186,23 @@
         headers: this.authHeader
       })
         .then(res => {
-          const color = ["color: #D3D3D3;", "color: #A9A9A9", "color: #787878;", "color: #484848;", "color: #000000;", "color: #000000;"]
-
-          this.firstDirectorRecomend = res.data.by_director_recomend.first_director
-          this.secondDirectorRecomend = res.data.by_director_recomend.second_director
-          this.thirdDirectorRecomend = res.data.by_director_recomend.third_director         
-          this.byDirectorRecomend.push(res.data.by_director_recomend.first_director)
-          this.byDirectorRecomend.push(res.data.by_director_recomend.second_director)
-          this.byDirectorRecomend.push(res.data.by_director_recomend.third_director)
-
-          this.actorRecommend.push(res.data.by_actor_recomend.first_actor)
-          this.actorRecommend.push(res.data.by_actor_recomend.second_actor)
-          this.actorRecommend.push(res.data.by_actor_recomend.third_actor)          
-
+          // 유저 정보
           this.user_watched = res.data.user_watched
           this.user_data = res.data.user_data
           this.userNameUpper = res.data.user_data.username.charAt(0).toUpperCase() + res.data.user_data.username.slice(1)
 
           // 감독정보 할당
-          this.first_director_info = res.data.by_director_recomend.first_director_info
-          this.second_director_info = res.data.by_director_recomend.second_director_info
-          this.third_director_info = res.data.by_director_recomend.third_director_info
+          this.directorInfo.push(res.data.by_director_recomend.first_director_info)
+          this.directorInfo.push(res.data.by_director_recomend.second_director_info)
+          this.directorInfo.push(res.data.by_director_recomend.third_director_info)
 
-          this.first_director_level = parseInt(res.data.by_director_recomend.first_director_level)
-          this.second_director_level = parseInt(res.data.by_director_recomend.second_director_level)
-          this.third_director_level = parseInt(res.data.by_director_recomend.third_director_level)
+          this.directorInfo[0] = {...this.directorInfo[0], 'level': parseInt(res.data.by_director_recomend.first_director_level) }
+          this.directorInfo[1] = {...this.directorInfo[1], 'level': parseInt(res.data.by_director_recomend.second_director_level) }
+          this.directorInfo[2] = {...this.directorInfo[2], 'level': parseInt(res.data.by_director_recomend.third_director_level) }
 
-          this.first_director_color = color[parseInt(this.first_director_level/20)]
-          this.second_director_color = color[parseInt(this.second_director_level/20)]
-          this.third_director_color = color[parseInt(this.third_director_level/20)]
-
-
-
-
-
-
-
-
+          this.directorRecommend.push(res.data.by_director_recomend.first_director)
+          this.directorRecommend.push(res.data.by_director_recomend.second_director)
+          this.directorRecommend.push(res.data.by_director_recomend.third_director)
 
           // 배우정보 할당
           this.actorInfo.push(res.data.by_actor_recomend.first_actor_info)
@@ -308,76 +213,9 @@
           this.actorInfo[1] = {...this.actorInfo[1], 'level': parseInt(res.data.by_actor_recomend.second_actor_level) }
           this.actorInfo[2] = {...this.actorInfo[2], 'level': parseInt(res.data.by_actor_recomend.third_actor_level) }
 
-          this.actorColor.push(color[parseInt(this.actorLevel[0]/20)])
-          this.actorColor.push(color[parseInt(this.actorLevel[1]/20)])
-          this.actorColor.push(color[parseInt(this.actorLevel[2]/20)])
-
-          this.actorModalButton.push(`document.getElementById('${this.actorRecommend[0]['id']}').style.display='block'`)
-          this.actorModalButton.push(`document.getElementById('${this.actorRecommend[1]['id']}').style.display='block'`)
-          this.actorModalButton.push(`document.getElementById('${this.actorRecommend[2]['id']}').style.display='block'`)
-
-          this.actorModalId.push(`document.getElementById('${this.actorRecommend[0]['id']}').style.display='none'`)
-          this.actorModalId.push(`document.getElementById('${this.actorRecommend[1]['id']}').style.display='none'`)
-          this.actorModalId.push(`document.getElementById('${this.actorRecommend[2]['id']}').style.display='none'`)
-
-          // 배우 이미지 할당
-          if ( this.actorInfo[0] === 'no_actor' ){ this.actorProfileUrl.push(drf.url.noPhoto()) }
-          else if ( !this.actorInfo[0]['profile_url'] ){ this.actorProfileUrl.push(drf.url.noPhoto()) }
-          else { this.actorProfileUrl.push(drf.url.img() + this.actorInfo[0]['profile_url']) }          
-          if ( this.actorInfo[1] === 'no_actor' ){ this.actorProfileUrl.push(drf.url.noPhoto()) }
-          else if ( !this.actorInfo[1]['profile_url'] ){ this.actorProfileUrl.push(drf.url.noPhoto()) }
-          else { this.actorProfileUrl.push(drf.url.img() + this.actorInfo[1]['profile_url']) }
-          if ( this.actorInfo[2] === 'no_actor' ){ this.actorProfileUrl.push(drf.url.noPhoto()) }
-          else if ( !this.actorInfo[2]['profile_url'] ){ this.actorProfileUrl.push(drf.url.noPhoto()) }
-          else { this.actorProfileUrl.push(drf.url.img() + this.actorInfo[2]['profile_url']) }
-
-
-
-
-
-
-
-
-
-
-          // // 배우정보 할당
-          // this.first_actor_info = res.data.by_actor_recomend.first_actor_info
-          // this.second_actor_info = res.data.by_actor_recomend.second_actor_info
-          // this.third_actor_info = res.data.by_actor_recomend.third_actor_info
-
-          // this.first_actor_level = parseInt(res.data.by_actor_recomend.first_actor_level)
-          // this.second_actor_level = parseInt(res.data.by_actor_recomend.second_actor_level)
-          // this.third_actor_level = parseInt(res.data.by_actor_recomend.third_actor_level)
-
-          // // if (res.data.by_actor_recomend.first_actor_level <= 20) {this.first_actor_color = color[0]}
-          // // else if (res.data.by_actor_recomend.first_actor_level <= 20) {this.first_actor_color = color[0]}
-          // this.first_actor_color = color[parseInt(this.first_actor_level/20)]
-          // this.second_actor_color = color[parseInt(this.second_actor_level/20)]
-          // this.third_actor_color = color[parseInt(this.third_actor_level/20)]
-
-          // // 배우 이미지 할당
-          // if ( this.first_actor_info === 'no_actor' ){ this.first_actor_url = drf.url.noPhoto() }
-          // else if ( !this.first_actor_info.profile_url ){ this.first_actor_url = drf.url.noPhoto() }
-          // else { this.first_actor_url = drf.url.img() + this.first_actor_info.profile_url }          
-          // if ( this.second_actor_info === 'no_actor' ){ this.second_actor_url = drf.url.noPhoto() }
-          // else if ( !this.second_actor_info.profile_url ){ this.second_actor_url = drf.url.noPhoto() }
-          // else { this.second_actor_url = drf.url.img() + this.second_actor_info.profile_url }
-          // if ( this.third_actor_info === 'no_actor' ){ this.third_actor_url = drf.url.noPhoto() }
-          // else if ( !this.third_actor_info.profile_url ){ this.third_actor_url = drf.url.noPhoto() }
-          // else { this.third_actor_url = drf.url.img() + this.third_actor_info.profile_url }
-
-
-
-          // 감독 이미지 할당
-          if ( this.first_director_info === 'no_actor' ){ this.first_director_url = drf.url.noPhoto() }
-          if ( !this.first_director_info.profile_url ){ this.first_director_url = drf.url.noPhoto() }
-          else { this.first_director_url = drf.url.img() + this.first_director_info.profile_url }          
-          if ( this.second_director_info === 'no_actor' ){ this.second_director_url = drf.url.noPhoto() }
-          else if ( !this.second_director_info.profile_url ){ this.second_director_url = drf.url.noPhoto() }
-          else { this.second_director_url = drf.url.img() + this.second_director_info.profile_url }
-          if ( this.third_director_info === 'no_actor' ){ this.third_director_url = drf.url.noPhoto() }
-          else if ( !this.third_director_info.profile_url ){ this.third_director_url = drf.url.noPhoto() }
-          else { this.third_director_url = drf.url.img() + this.third_director_info.profile_url }
+          this.actorRecommend.push(res.data.by_actor_recomend.first_actor)
+          this.actorRecommend.push(res.data.by_actor_recomend.second_actor)
+          this.actorRecommend.push(res.data.by_actor_recomend.third_actor)
 
           this.load = true
           // this.fetchUserProfile(res.data)
@@ -389,11 +227,7 @@
           }
         })
     }
-  //   // this.setUserProfileData()
   },
-  // mounted() {
-  //   this.setUserProfileData()
-  // }
 }
 </script>
 

@@ -36,11 +36,17 @@
 
 <script>
   import drf from '@/api/drf'
+  import { mapActions } from 'vuex'
 
   export default {
     name: 'ProfileModal',
     props: { id: Number, name: String, movie: Object },
     methods: {
+      ...mapActions([
+        'fetchMovieLike',
+        'fetchMovieWatched'
+        ]),
+
       modalClose(id) {
         var inst = document.getElementById(id);
         inst.style = "display: none;"
@@ -80,8 +86,8 @@
       },    
     },
     // created(){
-    //   console.log('무비 유알엘')
-    //   console.log(this.movieURL())
+    //   console.log('무비')
+    //   console.log(this.movie)
     // }
   }
 </script>
